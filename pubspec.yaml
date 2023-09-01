@@ -55,6 +55,8 @@ dependencies:
   scroll_to_index: ^3.0.1
   simple_speed_dial: ^0.1.7
   webview_flutter: ^4.0.6
+  get: ^4.6.5
+
 
 dev_dependencies:
   flutter_test:

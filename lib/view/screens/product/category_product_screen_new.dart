@@ -58,6 +58,7 @@ class _CategoryProductScreenNewState extends State<CategoryProductScreenNew> {
 
   @override
   Widget build(BuildContext context) {
+    print("-----");
     String _appBarText = 'Sub Categories';
     if(widget.subCategoryName != null && widget.subCategoryName != 'null') {
       _appBarText = widget.subCategoryName;

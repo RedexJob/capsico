@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_grocery/Widgets/pref_string.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/helper/route_helper.dart';
 import 'package:flutter_grocery/provider/auth_provider.dart';
@@ -35,7 +36,9 @@ import 'package:flutter_grocery/utill/app_constants.dart';
 import 'package:flutter_grocery/view/base/third_party_chat_widget.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart';
 import 'package:universal_ui/universal_ui.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -57,6 +60,7 @@ Future<void> main() async {
   }
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferenceIml.shared.instance = await SharedPreferences.getInstance();
   if(!kIsWeb) {
     await Firebase.initializeApp();
   } else {
@@ -172,7 +176,7 @@ class _MyAppState extends State<MyApp> {
     return Consumer<SplashProvider>(
       builder: (context, splashProvider,child){
         return (kIsWeb && splashProvider.configModel == null)? SizedBox():
-        MaterialApp(
+        GetMaterialApp(
           title: splashProvider.configModel != null ? splashProvider.configModel.ecommerceName ?? '' : AppConstants.APP_NAME,
           initialRoute: ResponsiveHelper.isMobilePhone() ? widget.orderID == null ? RouteHelper.splash :
           RouteHelper.getOrderDetailsRoute(widget.orderID): Provider.of<SplashProvider>(context, listen: false).configModel.maintenanceMode

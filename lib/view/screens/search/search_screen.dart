@@ -31,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+print("hello ---");
     return Scaffold(
       backgroundColor: ColorResources.getBackgroundColor(context),
       appBar: ResponsiveHelper.isDesktop(context)? PreferredSize(child: WebAppBar(), preferredSize: Size.fromHeight(120)) :null,

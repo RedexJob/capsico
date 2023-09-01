@@ -32,6 +32,7 @@ class SearchRepo {
       getTranslated('high_to_low', Get.context),
       getTranslated('ascending', Get.context),
       getTranslated('descending', Get.context),
+      getTranslated('sdad', Get.context),
     ];
     return _sortByList;
   }

@@ -23,8 +23,6 @@ import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:convert'as convert;
 
-
-
 class PlaceOrderButtonView extends StatefulWidget {
   final double amount;
   final TextEditingController noteController;

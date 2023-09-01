@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery/Controller/sign_up_controller.dart';
 import 'package:flutter_grocery/data/model/response/user_log_data.dart';
 import 'package:flutter_grocery/helper/email_checker.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_grocery/view/screens/auth/widget/code_picker_widget.dart
 import 'package:flutter_grocery/view/screens/forgot_password/forgot_password_screen.dart';
 import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
 import 'package:flutter_grocery/view/screens/menu/menu_screen.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'widget/social_login_widget.dart';
@@ -30,7 +32,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
+final signUpController = Get.put(SignUpController());
   FocusNode _emailFocus = FocusNode();
   FocusNode _numberFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
@@ -161,23 +163,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       )),
 
                     ]),
-                    SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-
-                    Text(
-                      getTranslated('password', context),
-                      style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
-                    ),
-                    SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-
-                    CustomTextField(
-                      hintText: getTranslated('password_hint', context),
-                      isShowBorder: true,
-                      isPassword: true,
-                      isShowSuffixIcon: true,
-                      focusNode: _passwordFocus,
-                      controller: _passwordController,
-                      inputAction: TextInputAction.done,
-                    ),
+                    //SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                    //
+                    // Text(
+                    //   getTranslated('password', context),
+                    //   style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                    // ),
+                    // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                    //
+                    // CustomTextField(
+                    //   hintText: getTranslated('password_hint', context),
+                    //   isShowBorder: true,
+                    //   isPassword: true,
+                    //   isShowSuffixIcon: true,
+                    //   focusNode: _passwordFocus,
+                    //   controller: _passwordController,
+                    //   inputAction: TextInputAction.done,
+                    // ),
                     SizedBox(height: 20),
 
                     // for remember me section
@@ -252,42 +254,43 @@ class _LoginScreenState extends State<LoginScreen> {
                       buttonText: getTranslated('login', context),
                       onPressed: () async {
                         String _email = _emailController.text.trim();
-                        if(!Provider.of<SplashProvider>(context, listen: false).configModel.emailVerification) {
-                          _email = _countryDialCode + _emailController.text.trim();
-                        }
-                        String _password = _passwordController.text.trim();
-                        if (_email.isEmpty) {
-                          if(Provider.of<SplashProvider>(context, listen: false).configModel.emailVerification){
-                            showCustomSnackBar(getTranslated('enter_email_address', context), context);
-                          }else {
-                            showCustomSnackBar(getTranslated('enter_phone_number', context), context);
-                          }
-                        }else if (Provider.of<SplashProvider>(context, listen: false).configModel.emailVerification
-                            && EmailChecker.isNotValid(_email)) {
-                          showCustomSnackBar(getTranslated('enter_valid_email', context), context);
-                        }else if (_password.isEmpty) {
-                          showCustomSnackBar(getTranslated('enter_password', context), context);
-                        }else if (_password.length < 6) {
-                          showCustomSnackBar(getTranslated('password_should_be', context), context);
-                        }else {
-                          authProvider.login(_email, _password).then((status) async {
-                            
-                            if (status.isSuccess) {
-                              if (authProvider.isActiveRememberMe) {
-                                authProvider.saveUserNumberAndPassword(UserLogData(
-                                  countryCode:  _countryDialCode,
-                                  phoneNumber: _configModel.emailVerification ? null : _emailController.text,
-                                  email: _configModel.emailVerification ? _emailController.text : null,
-                                  password: _password,
-                                ));
-                              } else {
-                                authProvider.clearUserLogData();
-                              }
-
-                             Navigator.pushNamedAndRemoveUntil(context, RouteHelper.menu, (route) => false, arguments: MenuScreen());
-                            }
-                          });
-                        }
+                        signUpController.loginSendOTP(context: context, mobileNumber: _email);
+                        // if(!Provider.of<SplashProvider>(context, listen: false).configModel.emailVerification) {
+                        //   _email = _countryDialCode + _emailController.text.trim();
+                        // }
+                        // String _password = _passwordController.text.trim();
+                        // if (_email.isEmpty) {
+                        //   if(Provider.of<SplashProvider>(context, listen: false).configModel.emailVerification){
+                        //     showCustomSnackBar(getTranslated('enter_email_address', context), context);
+                        //   }else {
+                        //     showCustomSnackBar(getTranslated('enter_phone_number', context), context);
+                        //   }
+                        // }else if (Provider.of<SplashProvider>(context, listen: false).configModel.emailVerification
+                        //     && EmailChecker.isNotValid(_email)) {
+                        //   showCustomSnackBar(getTranslated('enter_valid_email', context), context);
+                        // }else if (_password.isEmpty) {
+                        //   showCustomSnackBar(getTranslated('enter_password', context), context);
+                        // }else if (_password.length < 6) {
+                        //   showCustomSnackBar(getTranslated('password_should_be', context), context);
+                        // }else {
+                        //   authProvider.login(_email, _password).then((status) async {
+                        //
+                        //     if (status.isSuccess) {
+                        //       if (authProvider.isActiveRememberMe) {
+                        //         authProvider.saveUserNumberAndPassword(UserLogData(
+                        //           countryCode:  _countryDialCode,
+                        //           phoneNumber: _configModel.emailVerification ? null : _emailController.text,
+                        //           email: _configModel.emailVerification ? _emailController.text : null,
+                        //           password: _password,
+                        //         ));
+                        //       } else {
+                        //         authProvider.clearUserLogData();
+                        //       }
+                        //
+                        //      Navigator.pushNamedAndRemoveUntil(context, RouteHelper.menu, (route) => false, arguments: MenuScreen());
+                        //     }
+                        //   });
+                        // }
                       },
                     ) : Center(
                         child: CircularProgressIndicator(
