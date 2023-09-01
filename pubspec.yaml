@@ -56,7 +56,7 @@ dependencies:
   simple_speed_dial: ^0.1.7
   webview_flutter: ^4.0.6
   get: ^4.6.5
-
+  alt_sms_autofill: ^1.0.0
 
 dev_dependencies:
   flutter_test:

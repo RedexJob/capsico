@@ -148,8 +148,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                           ),
                           SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-
-
                         if(splashProvider.configModel.flashDealProductStatus)
                           Consumer<FlashDealProvider>(builder: (context, flashDealProvider, child) {
                             return !ResponsiveHelper.isDesktop(context) ?

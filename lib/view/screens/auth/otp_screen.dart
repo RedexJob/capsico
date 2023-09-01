@@ -1,9 +1,8 @@
-import 'package:country_code_picker/country_code.dart';
+import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_grocery/Controller/sign_up_controller.dart';
-import 'package:flutter_grocery/helper/email_checker.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
-import 'package:flutter_grocery/helper/route_helper.dart';
 import 'package:flutter_grocery/localization/language_constrants.dart';
 import 'package:flutter_grocery/provider/auth_provider.dart';
 import 'package:flutter_grocery/provider/splash_provider.dart';
@@ -12,12 +11,8 @@ import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/images.dart';
 import 'package:flutter_grocery/utill/styles.dart';
 import 'package:flutter_grocery/view/base/custom_button.dart';
-import 'package:flutter_grocery/view/base/custom_snackbar.dart';
 import 'package:flutter_grocery/view/base/custom_text_field.dart';
 import 'package:flutter_grocery/view/base/footer_view.dart';
-import 'package:flutter_grocery/view/screens/auth/create_account_screen.dart';
-import 'package:flutter_grocery/view/screens/auth/widget/code_picker_widget.dart';
-import 'package:flutter_grocery/view/screens/forgot_password/verification_screen.dart';
 import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -29,13 +24,40 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final signUpController = Get.put(SignUpController());
-  TextEditingController _emailController;
+ TextEditingController _emailController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
+
+  // TextEditingController? textEditingController1;
+
+String _comingSms = '';
+
+
+
+
+  Future<void> initSmsListener() async {
+
+    String comingSms;
+    try {
+      comingSms = await AltSmsAutofill().listenForSms;
+    } on PlatformException {
+      comingSms = 'Failed to get Sms.';
+    }
+    if (!mounted) return;
+    setState(() {
+      _comingSms = comingSms;
+      print("====>Message: ${_comingSms}");
+      print("=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=${_comingSms[0]}");
+      _emailController.text = _comingSms[15] + _comingSms[16] + _comingSms[17] + _comingSms[18]
+          + _comingSms[19] + _comingSms[20]; //used to set the code in the message to a string and setting it to a textcontroller. message length is 38. so my code is in string index 32-37.
+    });
+  }
+
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    _emailController = TextEditingController();
+    initSmsListener();
   }
 
   @override

@@ -31,16 +31,18 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   void initState() {
+    Provider.of<ProfileProvider>(context, listen: false).getUserInfo(context);
+    Provider.of<LocationProvider>(context, listen: false)
+        .initAddressList(context);
     super.initState();
     final bool _isLoggedIn =
         Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
     if (_isLoggedIn) {
-      Provider.of<ProfileProvider>(context, listen: false).getUserInfo(context);
-      Provider.of<LocationProvider>(context, listen: false)
-          .initAddressList(context);
+
     } else {
-      Provider.of<CartProvider>(context, listen: false).getCartData();
+
     }
+    //Provider.of<CartProvider>(context, listen: false).getCartData();
   }
 
   @override

@@ -22,6 +22,9 @@ import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
 import 'package:flutter_grocery/view/base/web_product_shimmer.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:flutter_grocery/helper/route_helper.dart';
+
+
 class CategoryProductScreenNew extends StatefulWidget {
   final CategoryModel categoryModel;
   final String subCategoryName;
@@ -268,8 +271,8 @@ class _CategoryProductScreenNewState extends State<CategoryProductScreenNew> {
                     borderRadius: BorderRadius.circular(12)
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(getTranslated('total_item', context),
                           style: poppinsMedium.copyWith(
@@ -291,7 +294,16 @@ class _CategoryProductScreenNewState extends State<CategoryProductScreenNew> {
                         style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE, color: Theme.of(context).cardColor),
                       ),
                     ]),
-
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, RouteHelper.cart);
+                      },
+                      child: Text(getTranslated('View Cart', context),
+                          style: poppinsMedium.copyWith(
+                            fontSize: Dimensions.FONT_SIZE_LARGE,
+                            color:Theme.of(context).cardColor,
+                          )),
+                    ),
                   ],
                 ),
               ),
